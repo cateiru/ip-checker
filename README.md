@@ -18,7 +18,7 @@ $ deno run https://raw.githubusercontent.com/cateiru/ip-checker/main/main.ts
 Checking IP address: 192.16
 ❌	iCloud not found.
 ❌	Cloudflare not found.
-❌	Cloudfront not foun
+❌	Cloudfront not found.
 ❌	Fastly not found.
 ```
 
