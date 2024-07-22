@@ -7,6 +7,7 @@ import {
   Input,
   Confirm,
 } from "https://deno.land/x/cliffy@v1.0.0-rc.4/prompt/mod.ts";
+import { ipChecker } from "./check.ts";
 
 const NAME = "IP-CHECKER";
 const VERSION = "1.0.0";
@@ -16,6 +17,12 @@ const IP_V4_REGEXP = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
 const IP_V6_REGEXP = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
 
 async function main() {
+  const { state } = await Deno.permissions.request({ name: "net" });
+  if (state !== "granted") {
+    console.error("Permission denied.");
+    Deno.exit(1);
+  }
+
   const command = await new Command()
     .name(NAME)
     .version(VERSION)
@@ -49,6 +56,7 @@ async function main() {
     (await Confirm.prompt(`Check IP address: ${ipAddress}?`));
 
   if (confirmed) {
+    console.log(`Checking IP address: ${ipAddress} ...`);
     await ipChecker(ipAddress);
   }
 }
