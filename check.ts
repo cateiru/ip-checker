@@ -1,9 +1,11 @@
+import { cloudflare } from "./services/cloudflare.ts";
 import { cloudfront } from "./services/cloudfront.ts";
 import { icloud } from "./services/icloud.ts";
 
 export async function ipChecker(ipAddress: string) {
   await cloudfront(ipAddress);
   await icloud(ipAddress);
+  await cloudflare(ipAddress);
 }
 
 export function checkIpAddresses(
