@@ -11,6 +11,18 @@ deno run https://raw.githubusercontent.com/cateiru/ip-checker/main/main.ts
 ```
 
 ```text
+$ deno run https://raw.githubusercontent.com/cateiru/ip-checker/main/main.ts
+
+? Enter check IP address: › 192.168.0.1
+? Check IP address: 192.168.0.1? (y/n) › Yes
+Checking IP address: 192.16
+❌	iCloud not found.
+❌	Cloudflare not found.
+❌	Cloudfront not foun
+❌	Fastly not found.
+```
+
+```text
 ✅ Granted all net access.
 
 Usage:   IP-CHECKER
