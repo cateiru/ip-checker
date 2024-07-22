@@ -1,11 +1,40 @@
-import { cloudflare } from "./services/cloudflare.ts";
-import { cloudfront } from "./services/cloudfront.ts";
-import { icloud } from "./services/icloud.ts";
+import {
+  colors,
+  ansi,
+} from "https://deno.land/x/cliffy@v1.0.0-rc.4/ansi/mod.ts";
+import { getIp as icloud } from "./services/icloud.ts";
+import { getIp as cloudflare } from "./services/cloudflare.ts";
+import { getIp as cloudfront } from "./services/cloudfront.ts";
+import { getIp as fastly } from "./services/fastly.ts";
+
+export type GetIPFunction = () => Promise<IpList>;
+
+type IpList = {
+  ipv4: string[];
+  ipv6: string[];
+};
 
 export async function ipChecker(ipAddress: string) {
-  await cloudfront(ipAddress);
-  await icloud(ipAddress);
-  await cloudflare(ipAddress);
+  await check(ipAddress, "iCloud", icloud);
+  await check(ipAddress, "Cloudflare", cloudflare);
+  await check(ipAddress, "Cloudfront", cloudfront);
+  await check(ipAddress, "Fastly", fastly);
+}
+
+export async function check(
+  ipAddress: string,
+  serviceName: string,
+  func: GetIPFunction
+) {
+  const report = colors.bold;
+
+  Deno.stdout.writeSync(
+    new TextEncoder().encode(report(`⏳\tChecking ${serviceName} ...`))
+  );
+
+  const { ipv4 } = await func();
+
+  checkIpAddresses(serviceName, ipAddress, ipv4);
 }
 
 export function checkIpAddresses(
@@ -22,6 +51,7 @@ export function checkIpAddresses(
     }
   }
 
+  console.log(ansi.cursorUp.eraseDown());
   if (isExist) {
     console.log(`✅\t${serviceName} found.`);
   } else {
