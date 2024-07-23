@@ -56,7 +56,7 @@ async function main() {
     (await Confirm.prompt(`Check IP address: ${ipAddress}?`));
 
   if (confirmed) {
-    console.log(`Checking IP address: ${ipAddress} ...`);
+    console.log(`Checking IP address: ${ipAddress} ...\n\n`);
     await ipChecker(ipAddress);
   }
 }
