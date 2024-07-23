@@ -50,13 +50,16 @@ function write(fileName: string, data: string) {
     expireEpoch: Date.now() + EXPIRE_TIME,
   };
 
-  Deno.writeTextFileSync(join(tmpDir(), fileName), JSON.stringify(cacheData));
+  Deno.writeTextFileSync(
+    join(tmpDir(), `${fileName}.json`),
+    JSON.stringify(cacheData)
+  );
 }
 
 // read cache data from file
 function read(fileName: string): CacheData | null {
   try {
-    const data = Deno.readTextFileSync(join(tmpDir(), fileName));
+    const data = Deno.readTextFileSync(join(tmpDir(), `${fileName}.json`));
     const cacheData: CacheData = JSON.parse(data);
 
     // if cache data is expired, return null
