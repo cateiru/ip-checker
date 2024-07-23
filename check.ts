@@ -3,14 +3,7 @@ import {
   tty,
 } from "https://deno.land/x/cliffy@v1.0.0-rc.4/ansi/mod.ts";
 
-import { ServiceMap } from "./services/index.ts";
-
-export type GetIPFunction = () => Promise<IpList>;
-
-type IpList = {
-  ipv4: string[];
-  ipv6: string[];
-};
+import { GetIPFunction, ServiceMap } from "./services/index.ts";
 
 export async function ipChecker(ipAddress: string) {
   for (const [serviceName, func] of Object.entries(ServiceMap)) {

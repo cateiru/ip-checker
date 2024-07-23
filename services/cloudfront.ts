@@ -1,4 +1,4 @@
-import { GetIPFunction } from "../check.ts";
+import { GetIPFunction } from "./index.ts";
 
 type CloudFrontIpListResponse = {
   CLOUDFRONT_GLOBAL_IP_LIST: string[];

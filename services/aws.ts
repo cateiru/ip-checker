@@ -1,4 +1,4 @@
-import { GetIPFunction } from "../check.ts";
+import { GetIPFunction } from "./index.ts";
 
 type AWSIpListResponse = {
   syncToken: string;

@@ -6,7 +6,7 @@ import { aws } from "./aws.ts";
 import { googleCloud } from "./googleCloud.ts";
 import { akamai } from "./akamai.ts";
 
-export type GetIPFunction = () => Promise<IpList>;
+export type GetIPFunction = () => Promise<IpList> | IpList;
 type IpList = {
   ipv4: string[];
   ipv6: string[];

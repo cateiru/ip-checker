@@ -1,4 +1,4 @@
-import { GetIPFunction } from "../check.ts";
+import { GetIPFunction } from "./index.ts";
 
 // ref. https://techdocs.akamai.com/origin-ip-acl/docs/update-your-origin-server
 const AKAMAI_IP_V4_LIST = [
@@ -23,7 +23,7 @@ const AKAMAI_IP_V4_LIST = [
   "184.84.0.0/14",
 ];
 
-export const akamai: GetIPFunction = async () => {
+export const akamai: GetIPFunction = () => {
   return {
     ipv4: AKAMAI_IP_V4_LIST,
     ipv6: [], // TODO: support IPv6
