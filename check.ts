@@ -8,6 +8,7 @@ import { getIp as cloudfront } from "./services/cloudfront.ts";
 import { getIp as fastly } from "./services/fastly.ts";
 import { getIp as aws } from "./services/aws.ts";
 import { getIp as googleCloud } from "./services/googleCloud.ts";
+import { getIp as akamai } from "./services/akamai.ts";
 
 export type GetIPFunction = () => Promise<IpList>;
 
@@ -23,6 +24,7 @@ export async function ipChecker(ipAddress: string) {
   await check(ipAddress, "Fastly", fastly);
   await check(ipAddress, "AWS", aws);
   await check(ipAddress, "Google Cloud", googleCloud);
+  await check(ipAddress, "Akamai", akamai);
 }
 
 export async function check(
