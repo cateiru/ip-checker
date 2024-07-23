@@ -1,10 +1,16 @@
 import { parse } from "jsr:@std/csv";
 import { GetIPFunction } from "./index.ts";
+import { fetchWithCache } from "../cache.ts";
 
 export const icloud: GetIPFunction = async () => {
-  const res = await fetch("https://mask-api.icloud.com/egress-ip-ranges.csv");
+  const text = await fetchWithCache(
+    "icloud",
+    "https://mask-api.icloud.com/egress-ip-ranges.csv",
+    undefined,
+    true
+  );
 
-  const csv = parse(await res.text(), {
+  const csv = parse(text, {
     skipFirstRow: false,
     columns: ["ip", "country", "locale", "city", ""],
   });

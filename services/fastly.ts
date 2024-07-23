@@ -1,3 +1,4 @@
+import { fetchWithCache } from "../cache.ts";
 import { GetIPFunction } from "./index.ts";
 
 type FastlyIpLitResponse = {
@@ -6,9 +7,10 @@ type FastlyIpLitResponse = {
 };
 
 export const fastly: GetIPFunction = async () => {
-  const fastlyIpList: FastlyIpLitResponse = await (
-    await fetch("https://api.fastly.com/public-ip-list")
-  ).json();
+  const fastlyIpList = await fetchWithCache<FastlyIpLitResponse>(
+    "fastly",
+    "https://api.fastly.com/public-ip-list"
+  );
 
   return {
     ipv4: fastlyIpList.addresses,

@@ -1,3 +1,4 @@
+import { fetchWithCache } from "../cache.ts";
 import { GetIPFunction } from "./index.ts";
 
 type GoogleCloudIpListResponse = {
@@ -10,9 +11,10 @@ type GoogleCloudIpListResponse = {
 };
 
 export const googleCloud: GetIPFunction = async () => {
-  const googleCloudIpList: GoogleCloudIpListResponse = await (
-    await fetch("https://www.gstatic.com/ipranges/goog.json")
-  ).json();
+  const googleCloudIpList = await fetchWithCache<GoogleCloudIpListResponse>(
+    "googleCloud",
+    "https://www.gstatic.com/ipranges/goog.json"
+  );
 
   return {
     ipv4: googleCloudIpList.prefixes

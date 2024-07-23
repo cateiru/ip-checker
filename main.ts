@@ -17,11 +17,7 @@ const IP_V4_REGEXP = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
 const IP_V6_REGEXP = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
 
 async function main() {
-  const { state } = await Deno.permissions.request({ name: "net" });
-  if (state !== "granted") {
-    console.error("Permission denied.");
-    Deno.exit(1);
-  }
+  await permissions();
 
   const command = await new Command()
     .name(NAME)
@@ -58,6 +54,21 @@ async function main() {
   if (confirmed) {
     console.log(`Checking IP address: ${ipAddress} ...\n`);
     await ipChecker(ipAddress);
+  }
+}
+
+async function permissions() {
+  const permissions = [
+    Deno.permissions.request({ name: "net" }),
+    Deno.permissions.request({ name: "read" }),
+    Deno.permissions.request({ name: "write" }),
+  ];
+
+  const result = await Promise.all(permissions);
+
+  if (result.some((p) => p.state !== "granted")) {
+    console.error("Permission denied.");
+    Deno.exit(1);
   }
 }
 

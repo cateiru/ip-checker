@@ -1,3 +1,4 @@
+import { fetchWithCache } from "../cache.ts";
 import { GetIPFunction } from "./index.ts";
 
 type AWSIpListResponse = {
@@ -18,9 +19,10 @@ type AWSIpListResponse = {
 };
 
 export const aws: GetIPFunction = async () => {
-  const awsIpList: AWSIpListResponse = await (
-    await fetch("https://ip-ranges.amazonaws.com/ip-ranges.json")
-  ).json();
+  const awsIpList = await fetchWithCache<AWSIpListResponse>(
+    "aws",
+    "https://ip-ranges.amazonaws.com/ip-ranges.json"
+  );
 
   return {
     ipv4: awsIpList.prefixes.map((prefix) => prefix.ip_prefix),
