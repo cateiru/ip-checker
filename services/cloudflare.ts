@@ -7,8 +7,8 @@ type CloudflareIpListResponse = {
     etag: string;
   };
   success: boolean;
-  errors: any[];
-  messages: any[];
+  errors: unknown[];
+  messages: unknown[];
 };
 
 export const cloudflare: GetIPFunction = async () => {
