@@ -7,7 +7,7 @@ This is a tool that allows you to find out which service an IP address belongs t
 - Install [Deno](https://deno.land/)
 
 ```bash
-deno run https://raw.githubusercontent.com/cateiru/ip-checker/main/main.ts
+deno run --allow-net https://raw.githubusercontent.com/cateiru/ip-checker/main/main.ts
 ```
 
 ```text

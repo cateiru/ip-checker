@@ -1,6 +1,6 @@
 import {
   colors,
-  ansi,
+  tty,
 } from "https://deno.land/x/cliffy@v1.0.0-rc.4/ansi/mod.ts";
 import { getIp as icloud } from "./services/icloud.ts";
 import { getIp as cloudflare } from "./services/cloudflare.ts";
@@ -32,10 +32,10 @@ export async function check(
   serviceName: string,
   func: GetIPFunction
 ) {
-  const report = colors.bold;
+  const report = colors.bold.green;
 
   Deno.stdout.writeSync(
-    new TextEncoder().encode(report(`⏳\tChecking ${serviceName} ...`))
+    new TextEncoder().encode(report(`⏳  Checking ${serviceName} ...`))
   );
 
   const { ipv4 } = await func();
@@ -57,11 +57,14 @@ export function checkIpAddresses(
     }
   }
 
-  console.log(ansi.cursorUp.eraseDown());
+  tty.cursorLeft.eraseLine();
+
+  const serviceNameColor = colors.bold.blue;
+
   if (isExist) {
-    console.log(`✅\t${serviceName} found.`);
+    console.log(`✅  ${serviceNameColor(serviceName)} found.`);
   } else {
-    console.log(`❌\t${serviceName} not found.`);
+    console.log(`❌  ${serviceNameColor(serviceName)} not found.`);
   }
 }
 
