@@ -1,7 +1,5 @@
 import { GetIPFunction } from "../check.ts";
 
-const CLOUDFLARE_IP_LIST = "https://api.cloudflare.com/client/v4/ips";
-
 type CloudflareIpListResponse = {
   result: {
     ipv4_cidrs: string[];
@@ -13,9 +11,9 @@ type CloudflareIpListResponse = {
   messages: any[];
 };
 
-export const getIp: GetIPFunction = async () => {
+export const cloudflare: GetIPFunction = async () => {
   const cloudFrontIpList: CloudflareIpListResponse = await (
-    await fetch(CLOUDFLARE_IP_LIST)
+    await fetch("https://api.cloudflare.com/client/v4/ips")
   ).json();
 
   return {

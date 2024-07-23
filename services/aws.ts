@@ -1,7 +1,5 @@
 import { GetIPFunction } from "../check.ts";
 
-const AWS_IP_LIST = "https://ip-ranges.amazonaws.com/ip-ranges.json";
-
 type AWSIpListResponse = {
   syncToken: string;
   createDate: string;
@@ -19,8 +17,10 @@ type AWSIpListResponse = {
   }[];
 };
 
-export const getIp: GetIPFunction = async () => {
-  const awsIpList: AWSIpListResponse = await (await fetch(AWS_IP_LIST)).json();
+export const aws: GetIPFunction = async () => {
+  const awsIpList: AWSIpListResponse = await (
+    await fetch("https://ip-ranges.amazonaws.com/ip-ranges.json")
+  ).json();
 
   return {
     ipv4: awsIpList.prefixes.map((prefix) => prefix.ip_prefix),

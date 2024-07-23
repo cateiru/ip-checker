@@ -1,7 +1,5 @@
 import { GetIPFunction } from "../check.ts";
 
-const GOOGLE_CLOUD_IP_LIST = "https://www.gstatic.com/ipranges/goog.json";
-
 type GoogleCloudIpListResponse = {
   syncToken: string;
   creationTime: string;
@@ -11,9 +9,9 @@ type GoogleCloudIpListResponse = {
   }[];
 };
 
-export const getIp: GetIPFunction = async () => {
+export const googleCloud: GetIPFunction = async () => {
   const googleCloudIpList: GoogleCloudIpListResponse = await (
-    await fetch(GOOGLE_CLOUD_IP_LIST)
+    await fetch("https://www.gstatic.com/ipranges/goog.json")
   ).json();
 
   return {

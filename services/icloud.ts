@@ -1,11 +1,8 @@
 import { parse } from "jsr:@std/csv";
 import { GetIPFunction } from "../check.ts";
 
-const ICLOUD_PRIVATE_RELAY_IP_LIST =
-  "https://mask-api.icloud.com/egress-ip-ranges.csv";
-
-export const getIp: GetIPFunction = async () => {
-  const res = await fetch(ICLOUD_PRIVATE_RELAY_IP_LIST);
+export const icloud: GetIPFunction = async () => {
+  const res = await fetch("https://mask-api.icloud.com/egress-ip-ranges.csv");
 
   const csv = parse(await res.text(), {
     skipFirstRow: false,

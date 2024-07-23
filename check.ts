@@ -2,13 +2,8 @@ import {
   colors,
   tty,
 } from "https://deno.land/x/cliffy@v1.0.0-rc.4/ansi/mod.ts";
-import { getIp as icloud } from "./services/icloud.ts";
-import { getIp as cloudflare } from "./services/cloudflare.ts";
-import { getIp as cloudfront } from "./services/cloudfront.ts";
-import { getIp as fastly } from "./services/fastly.ts";
-import { getIp as aws } from "./services/aws.ts";
-import { getIp as googleCloud } from "./services/googleCloud.ts";
-import { getIp as akamai } from "./services/akamai.ts";
+
+import { ServiceMap } from "./services/index.ts";
 
 export type GetIPFunction = () => Promise<IpList>;
 
@@ -18,13 +13,9 @@ type IpList = {
 };
 
 export async function ipChecker(ipAddress: string) {
-  await check(ipAddress, "iCloud Private Relay", icloud);
-  await check(ipAddress, "Cloudflare", cloudflare);
-  await check(ipAddress, "Cloudfront", cloudfront);
-  await check(ipAddress, "Fastly", fastly);
-  await check(ipAddress, "AWS", aws);
-  await check(ipAddress, "Google Cloud", googleCloud);
-  await check(ipAddress, "Akamai", akamai);
+  for (const [serviceName, func] of Object.entries(ServiceMap)) {
+    await check(ipAddress, serviceName, func);
+  }
 }
 
 export async function check(
@@ -48,14 +39,7 @@ export function checkIpAddresses(
   ipAddress: string,
   ipList: string[]
 ) {
-  let isExist = false;
-
-  for (const ip of ipList) {
-    if (checkIpAddress(ipAddress, ip)) {
-      isExist = true;
-      break;
-    }
-  }
+  const isExist = ipList.some((ip) => checkIpAddress(ipAddress, ip));
 
   tty.cursorLeft.eraseLine();
 

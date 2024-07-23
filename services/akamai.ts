@@ -23,7 +23,7 @@ const AKAMAI_IP_V4_LIST = [
   "184.84.0.0/14",
 ];
 
-export const getIp: GetIPFunction = async () => {
+export const akamai: GetIPFunction = async () => {
   return {
     ipv4: AKAMAI_IP_V4_LIST,
     ipv6: [], // TODO: support IPv6

@@ -1,15 +1,13 @@
 import { GetIPFunction } from "../check.ts";
 
-const FASTLY_IP_LIST = "https://api.fastly.com/public-ip-list";
-
 type FastlyIpLitResponse = {
   addresses: string[];
   ipv6_addresses: string[];
 };
 
-export const getIp: GetIPFunction = async () => {
+export const fastly: GetIPFunction = async () => {
   const fastlyIpList: FastlyIpLitResponse = await (
-    await fetch(FASTLY_IP_LIST)
+    await fetch("https://api.fastly.com/public-ip-list")
   ).json();
 
   return {
