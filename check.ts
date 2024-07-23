@@ -2,47 +2,49 @@ import {
   colors,
   tty,
 } from "https://deno.land/x/cliffy@v1.0.0-rc.4/ansi/mod.ts";
-
 import { GetIPFunction, ServiceMap } from "./services/index.ts";
 
-export async function ipChecker(ipAddress: string) {
+type ResultJson = {
+  [serviceName: string]: boolean;
+};
+
+export async function ipChecker(ipAddress: string, json: boolean) {
+  const resultJson: ResultJson = {};
+  const serviceNameColor = colors.bold.blue;
+
   for (const [serviceName, func] of Object.entries(ServiceMap)) {
-    await check(ipAddress, serviceName, func);
+    if (!json) {
+      const report = colors.bold.green;
+      Deno.stdout.writeSync(
+        new TextEncoder().encode(report(`⏳  Checking ${serviceName} ...`))
+      );
+    }
+
+    const result = await check(ipAddress, func);
+
+    if (json) {
+      resultJson[serviceName] = result;
+    } else {
+      tty.cursorLeft.eraseLine();
+      if (result) {
+        console.log(`✅  ${serviceNameColor(serviceName)} found.`);
+      } else {
+        console.log(`❌  ${serviceNameColor(serviceName)} not found.`);
+      }
+    }
+  }
+
+  if (json) {
+    console.log(JSON.stringify(resultJson, null, 2));
   }
 }
 
 export async function check(
   ipAddress: string,
-  serviceName: string,
   func: GetIPFunction
-) {
-  const report = colors.bold.green;
-
-  Deno.stdout.writeSync(
-    new TextEncoder().encode(report(`⏳  Checking ${serviceName} ...`))
-  );
-
+): Promise<boolean> {
   const { ipv4 } = await func();
-
-  checkIpAddresses(serviceName, ipAddress, ipv4);
-}
-
-export function checkIpAddresses(
-  serviceName: string,
-  ipAddress: string,
-  ipList: string[]
-) {
-  const isExist = ipList.some((ip) => checkIpAddress(ipAddress, ip));
-
-  tty.cursorLeft.eraseLine();
-
-  const serviceNameColor = colors.bold.blue;
-
-  if (isExist) {
-    console.log(`✅  ${serviceNameColor(serviceName)} found.`);
-  } else {
-    console.log(`❌  ${serviceNameColor(serviceName)} not found.`);
-  }
+  return ipv4.some((ip) => checkIpAddress(ipAddress, ip));
 }
 
 function checkIpAddress(ip: string, currentIp: string) {

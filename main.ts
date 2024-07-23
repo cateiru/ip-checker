@@ -10,7 +10,7 @@ import {
 import { ipChecker } from "./check.ts";
 
 const NAME = "IP-CHECKER";
-const VERSION = "1.0.0";
+const VERSION = "1.1.0";
 const DESCRIPTION = "A simple CLI tool to check your IP address.";
 
 const IP_V4_REGEXP = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
@@ -26,6 +26,7 @@ async function main() {
     .type("ip", ipAddressType)
     .option("-i, --ip <IPAddress:ip>", "IP address to check")
     .option("-y, --yes", "Skip confirmation")
+    .option("-j, --json", "Output as JSON")
     .parse(Deno.args);
 
   // If the IP address is not provided, prompt the user to enter it.
@@ -52,8 +53,7 @@ async function main() {
     (await Confirm.prompt(`Check IP address: ${ipAddress}?`));
 
   if (confirmed) {
-    console.log(`Checking IP address: ${ipAddress} ...\n`);
-    await ipChecker(ipAddress);
+    await ipChecker(ipAddress, command.options.json ?? false);
   }
 }
 
