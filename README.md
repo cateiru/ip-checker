@@ -11,19 +11,23 @@ deno run --allow-net https://raw.githubusercontent.com/cateiru/ip-checker/main/m
 ```
 
 ```text
-$ deno run https://raw.githubusercontent.com/cateiru/ip-checker/main/main.ts
+$ deno run --allow-net https://raw.githubusercontent.com/cateiru/ip-checker/main/main.ts
 
 ? Enter check IP address: › 192.168.0.1
 ? Check IP address: 192.168.0.1? (y/n) › Yes
-Checking IP address: 192.16
-❌	iCloud not found.
-❌	Cloudflare not found.
-❌	Cloudfront not found.
-❌	Fastly not found.
+Checking IP address: 192.168.0.1 ...
+
+❌  iCloud Private Relay not found.
+❌  Cloudflare not found.
+❌  Cloudfront not found.
+❌  Fastly not found.
+❌  AWS not found.
+❌  Google Cloud not found.
+❌  Akamai not found.
 ```
 
 ```text
-✅ Granted all net access.
+$ deno run --allow-net https://raw.githubusercontent.com/cateiru/ip-checker/main/main.ts --help
 
 Usage:   IP-CHECKER
 Version: 1.0.0
